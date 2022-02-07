@@ -4,10 +4,10 @@ import java.util.Scanner;
 
 class Main{
     public static String[][] board = {
-        {"-","-","-","-","T","-","-","-"},
-        {"-","-","-","-","h","-","-","-"},
+        {"t","h","b","q","k","b","h","t"},
+        {"p","p","p","p","p","p","p","p"},
         {"-","-","-","-","-","-","-","-"},
-        {"-","P","-","-","T","-","P","-"},
+        {"-","-","-","-","-","-","-","-"},
         {"-","-","-","-","-","-","-","-"},
         {"-","-","-","-","-","-","-","-"},
         {"P","P","P","P","P","P","P","P"},
@@ -18,9 +18,34 @@ class Main{
             displayBoard();
             int[] input = readInput();
             verifyMove(input);
+            displayBoard();
+            int[] input2 = readInput();
+            verifyMoveEnemy(input2);
         }
         
 
+    }
+
+    public static boolean verifyIsKingDead(){
+        boolean isKingDead = true;
+        boolean kingFriend = true;
+        boolean kingFoe = true;
+        for (int i = 0; i<=7;i++){
+            for (int j = 0;j<=7;i++){
+                if (board[i][j]=="K"){
+                    kingFriend = false;
+                }
+                if (board[i][j]=="k"){
+                    kingFoe = false;
+                }
+            }
+        }
+        if (kingFriend||kingFoe){
+            isKingDead = true;
+        }else {
+            isKingDead = false;
+        }
+        return isKingDead;
     }
 
     public static int[] readInput(){
@@ -71,7 +96,6 @@ class Main{
         }
         // tower
         if (board[arr[0]][arr[1]] == "T"){
-            boolean flag = false;
             
             // vai pra cima
             if (arr[0]>arr[2]){
@@ -130,60 +154,6 @@ class Main{
                 }
             }
             
-            /*
-            if (arr[1]<arr[3] || arr[2]<arr[0]){
-                if (arr[2] == arr[0] && arr[3] != arr[1]){
-                    for (int i = arr[1];i<=arr[3];i++){
-                        if (board[arr[0]+1][i] == "P"||board[arr[0]+1][i] == "T"||board[arr[0]+1][i] == "H"||board[arr[0]+1][i] == "B"||board[arr[0]+1][i] == "Q"||board[arr[0]+1][i] == "K"){
-                            flag = true;
-                        }
-                    }
-                    if (!flag){
-                        board[arr[2]][arr[3]] = "T";
-                        board[arr[0]][arr[1]] = "-";
-                    }
-                }
-                if (arr[2] != arr[0] && arr[3] == arr[1]){
-                    for (int i = arr[2];i<=arr[0];i++){
-                        if (board[i][arr[1]] == "P"||board[i][arr[1]] == "T"||board[i][arr[1]] == "H"||board[i][arr[1]] == "B"||board[i][arr[1]] == "Q"||board[i][arr[1]] == "K"){
-                            flag = true;
-                        }
-                        
-                    }
-                    if (!flag){
-                        board[arr[2]][arr[3]] = "T";
-                        board[arr[0]][arr[1]] = "-";
-                    }
-                }
-            }else if (arr[1]>arr[3] || arr[2]>arr[0]){
-                if (arr[2] == arr[0] && arr[3] != arr[1]){
-                    for (int i = arr[3];i<=arr[1];i++){
-                        if (board[arr[0]][i] == "P"||board[arr[0]][i] == "T"||board[arr[0]][i] == "H"||board[arr[0]][i] == "B"||board[arr[0]][i] == "Q"||board[arr[0]][i] == "K"){
-                            flag = true;
-                        }
-                    }
-                    if (!flag){
-                        board[arr[2]][arr[3]] = "T";
-                        board[arr[0]][arr[1]] = "-";
-                    }
-                }
-                ///////////////
-                if (arr[2] != arr[0] && arr[3] == arr[1]){
-                    for (int i = arr[2];i<=arr[0];i++){
-                        if (board[i][arr[1]] == "P"||board[i][arr[1]] == "T"||board[i][arr[1]] == "H"||board[i][arr[1]] == "B"||board[i][arr[1]] == "Q"||board[i][arr[1]] == "K"){
-                            flag = true;
-                        }
-                        //45 75
-                        //0  2
-                    }
-                    if (!flag){
-                        board[arr[2]][arr[3]] = "T";
-                        board[arr[0]][arr[1]] = "-";
-                    }
-                }
-            } else{
-                System.out.println("Jogada invalida");
-            }*/
             
         }
         // horse
@@ -359,61 +329,374 @@ class Main{
                     }
                 }  
             }
-            boolean flag2 = false;
-            if (arr[1]<arr[3] || arr[2]<arr[0]){
-                //!!!!!!!!!!!!!!!!!
-                if (arr[2] == arr[0] && arr[3] != arr[1]){
-                    for (int i = arr[1];i<arr[3];i++){
-                        if (board[arr[0]+1][i] != "-"){
-                            flag2 = true;
-                        }
-                    }
-                    if (!flag2){
+            // vai pra cima
+            if (arr[0]>arr[2]){
+                // verifica se tem sugeira no caminho
+                for (int i=arr[0]-1;i>=arr[2];i--){
+                    if (board[i][arr[1]]=="P"||board[i][arr[1]]=="T"||board[i][arr[1]]=="H"||board[i][arr[1]]=="Q"||board[i][arr[1]]=="K"){
+                        break;
+                    // se ultimo index for igual ao selecionado para mover peça
+                    }else if (i == arr[2]){
+                        // aloca peça
                         board[arr[2]][arr[3]] = "Q";
                         board[arr[0]][arr[1]] = "-";
                     }
                 }
-                if (arr[2] != arr[0] && arr[3] == arr[1]){
-                    
-                    for (int i = arr[2];i<arr[0];i++){
-                        if (board[i][arr[1]] != "-"){
-                            flag2 = true;
-                        }
-                        
-                    }
-                    if (!flag2){
+            }
+            // vai pra baixo
+            if (arr[0]<arr[2]){
+                // verifica se tem sugeira no caminho
+                for (int i=arr[0]+1;i<=arr[2];i++){
+                    if (board[i][arr[1]]=="P"||board[i][arr[1]]=="T"||board[i][arr[1]]=="H"||board[i][arr[1]]=="Q"||board[i][arr[1]]=="K"){
+                        break;
+                    // se ultimo index for igual ao selecionado para mover peça
+                    }else if (i == arr[2]){
+                        // aloca peça
                         board[arr[2]][arr[3]] = "Q";
                         board[arr[0]][arr[1]] = "-";
                     }
                 }
-            }else if (arr[1]>arr[3] || arr[2]>arr[0]){
-                //!!!!!!!!!!!!!!!!!
-                if (arr[2] == arr[0] && arr[3] != arr[1]){
-                    for (int i = arr[3];i<arr[1];i++){
-                        if (board[arr[0]][i] != "-"){
-                            flag2 = true;
-                        }
-                    }
-                    if (!flag2){
+            }
+            // vai pra direita
+            if (arr[1]<arr[3]){
+                // verifica se tem sugeira no caminho
+                for (int i=arr[1]+1;i<=arr[3];i++){
+                    if (board[arr[0]][i]=="P"||board[i][arr[0]]=="T"||board[i][arr[0]]=="H"||board[i][arr[0]]=="Q"||board[i][arr[0]]=="K"){
+                        break;
+                    // se ultimo index for igual ao selecionado para mover peça
+                    }else if (i == arr[3]){
+                        // aloca peça
                         board[arr[2]][arr[3]] = "Q";
                         board[arr[0]][arr[1]] = "-";
                     }
                 }
-                if (arr[2] != arr[0] && arr[3] == arr[1]){
-                    for (int i = arr[2];i<arr[0];i++){
-                        if (board[i][arr[1]] != "-"){
-                            flag2 = true;
-                        }
-                        
-                    }
-                    if (!flag2){
+            }
+            // vai pra esquerda
+            if (arr[1]>arr[3]){
+                // verifica se tem sugeira no caminho
+                for (int i=arr[1]-1;i>=arr[3];i--){
+                    if (board[arr[0]][i]=="P"||board[i][arr[0]]=="T"||board[i][arr[0]]=="H"||board[i][arr[0]]=="Q"||board[i][arr[0]]=="K"){
+                        break;
+                    // se ultimo index for igual ao selecionado para mover peça
+                    }else if (i == arr[3]){
+                        // aloca peça
                         board[arr[2]][arr[3]] = "Q";
                         board[arr[0]][arr[1]] = "-";
                     }
                 }
-            } else{
+            }
+            
+        }
+        
+    }
+    public static void verifyMoveEnemy(int[] arr){
+        // pawn
+        if (board[arr[0]][arr[1]] == "p"){
+            if (arr[2] == arr[0]-1 && arr[3] == arr[1]){
+                board[arr[2]][arr[3]] = "p";
+                board[arr[0]][arr[1]] = "-";
+            }else if (arr[2]==arr[0]-1 && arr[3]==arr[1]+1 && (board[arr[2]][arr[3]]=="P"||board[arr[2]][arr[3]]=="T"||board[arr[2]][arr[3]]=="H"||board[arr[2]][arr[3]]=="B"||board[arr[2]][arr[3]]=="Q"||board[arr[2]][arr[3]]=="K")){
+                board[arr[2]][arr[3]] = "p";
+                board[arr[0]][arr[1]] = "-";
+            }else if (arr[2]==arr[0]-1 && arr[3]==arr[1]-1 && (board[arr[2]][arr[3]]=="P"||board[arr[2]][arr[3]]=="T"||board[arr[2]][arr[3]]=="H"||board[arr[2]][arr[3]]=="B"||board[arr[2]][arr[3]]=="Q"||board[arr[2]][arr[3]]=="K")){
+                board[arr[2]][arr[3]] = "p";
+                board[arr[0]][arr[1]] = "-";
+            }else{
                 System.out.println("Jogada invalida");
             }
+        }
+        // tower
+        if (board[arr[0]][arr[1]] == "t"){
+            
+            // vai pra cima
+            if (arr[0]>arr[2]){
+                // verifica se tem sugeira no caminho
+                for (int i=arr[0]-1;i>=arr[2];i--){
+                    if (board[i][arr[1]]=="p"||board[i][arr[1]]=="t"||board[i][arr[1]]=="h"||board[i][arr[1]]=="q"||board[i][arr[1]]=="k"){
+                        break;
+                    // se ultimo index for igual ao selecionado para mover peça
+                    }else if (i == arr[2]){
+                        // aloca peça
+                        board[arr[2]][arr[3]] = "t";
+                        board[arr[0]][arr[1]] = "-";
+                    }
+                }
+            }
+            // vai pra baixo
+            if (arr[0]<arr[2]){
+                // verifica se tem sugeira no caminho
+                for (int i=arr[0]+1;i<=arr[2];i++){
+                    if (board[i][arr[1]]=="p"||board[i][arr[1]]=="t"||board[i][arr[1]]=="h"||board[i][arr[1]]=="q"||board[i][arr[1]]=="k"){
+                        break;
+                    // se ultimo index for igual ao selecionado para mover peça
+                    }else if (i == arr[2]){
+                        // aloca peça
+                        board[arr[2]][arr[3]] = "t";
+                        board[arr[0]][arr[1]] = "-";
+                    }
+                }
+            }
+            // vai pra direita
+            if (arr[1]<arr[3]){
+                // verifica se tem sugeira no caminho
+                for (int i=arr[1]+1;i<=arr[3];i++){
+                    if (board[arr[0]][i]=="p"||board[i][arr[0]]=="t"||board[i][arr[0]]=="h"||board[i][arr[0]]=="q"||board[i][arr[0]]=="k")||board[i][arr[0]]=="b"){
+                        break;
+                    // se ultimo index for igual ao selecionado para mover peça
+                    }else if (i == arr[3]){
+                        // aloca peça
+                        board[arr[2]][arr[3]] = "t";
+                        board[arr[0]][arr[1]] = "-";
+                    }
+                }
+            }
+            // vai pra esquerda
+            if (arr[1]>arr[3]){
+                // verifica se tem sugeira no caminho
+                for (int i=arr[1]-1;i>=arr[3];i--){
+                    if (board[arr[0]][i]=="P"||board[i][arr[0]]=="T"||board[i][arr[0]]=="H"||board[i][arr[0]]=="Q"||board[i][arr[0]]=="K"){
+                        break;
+                    // se ultimo index for igual ao selecionado para mover peça
+                    }else if (i == arr[3]){
+                        // aloca peça
+                        board[arr[2]][arr[3]] = "T";
+                        board[arr[0]][arr[1]] = "-";
+                    }
+                }
+            }
+            
+            
+        }
+        // horse
+        if (board[arr[0]][arr[1]] == "H"){
+            if (arr[2]==arr[0]-2 && arr[3]==arr[1]+1){
+                board[arr[2]][arr[3]] = "H";
+                board[arr[0]][arr[1]] = "-";
+            }else if (arr[2]==arr[0]-1 && arr[3]==arr[1]+2){
+                board[arr[2]][arr[3]] = "H";
+                board[arr[0]][arr[1]] = "-";
+            }else if (arr[2]==arr[0]+1 && arr[3]==arr[1]+2){
+                board[arr[2]][arr[3]] = "H";
+                board[arr[0]][arr[1]] = "-";
+            }else if (arr[2]==arr[0]+2 && arr[3]==arr[1]+1){
+                board[arr[2]][arr[3]] = "H";
+                board[arr[0]][arr[1]] = "-";
+            }else if (arr[2]==arr[0]+2 && arr[3]==arr[1]-1){
+                board[arr[2]][arr[3]] = "H";
+                board[arr[0]][arr[1]] = "-";
+            }else if (arr[2]==arr[0]+1 && arr[3]==arr[1]-2){
+                board[arr[2]][arr[3]] = "H";
+                board[arr[0]][arr[1]] = "-";
+            }else if (arr[2]==arr[0]-1 && arr[3]==arr[1]-2){
+                board[arr[2]][arr[3]] = "H";
+                board[arr[0]][arr[1]] = "-";
+            }else if (arr[2]==arr[0]-2 && arr[3]==arr[1]-1){
+                board[arr[2]][arr[3]] = "H";
+                board[arr[0]][arr[1]] = "-";
+            }else{
+                System.out.println("Jogada invalida");
+            }
+
+        }
+        // bishop
+        if (board[arr[0]][arr[1]] == "B"){
+            boolean flag = true;
+            int longestLength;
+            if (arr[2]>arr[3]){
+                longestLength = arr[2];
+            }else {
+                longestLength = arr[3];
+            }
+            if (arr[2] >= 8 || arr[3]>=8){
+                System.out.println("Jogada invalida");
+            }else{
+                if (arr[2]>arr[0] && arr[3]>arr[1]){
+
+                    
+                    for (int i = 1;i<longestLength;i++){
+                        if (board[arr[0]+i][arr[1]+i] == "P"||board[arr[0]+1][i] == "T"||board[arr[0]+1][i] == "H"||board[arr[0]+1][i] == "B"||board[arr[0]+1][i] == "Q"||board[arr[0]+1][i] == "K"){
+                            break;
+                        }
+                        if (arr[0]+i == arr[2] && arr[1]+i == arr[3]){
+                            board[arr[2]][arr[3]] = "B";
+                            board[arr[0]][arr[1]] = "-";
+                        }
+                    }
+                    
+                    
+                }
+                if (arr[2]>arr[0] && arr[3]<arr[1]){
+                    
+                    for (int i = 1;i<longestLength;i++){
+                        if (board[arr[0]+i][arr[1]-i] == "P"||board[arr[0]+1][i] == "T"||board[arr[0]+1][i] == "H"||board[arr[0]+1][i] == "B"||board[arr[0]+1][i] == "Q"||board[arr[0]+1][i] == "K"){
+                            break;
+                        }
+                        if (arr[0]+i == arr[2] && arr[1]-i == arr[3]){
+                            board[arr[2]][arr[3]] = "B";
+                            board[arr[0]][arr[1]] = "-";
+                            
+                        }
+                    }
+                }
+                if (arr[2]<arr[0] && arr[3]<arr[1]){
+                    
+                    for (int i = 1;i<longestLength;i++){
+                        if (board[arr[0]-i][arr[1]-i] == "P"||board[arr[0]+1][i] == "T"||board[arr[0]+1][i] == "H"||board[arr[0]+1][i] == "B"||board[arr[0]+1][i] == "Q"||board[arr[0]+1][i] == "K"){
+                            break;
+                        }
+                        if (arr[0]-i == arr[2] && arr[1]-i == arr[3]){
+                            board[arr[2]][arr[3]] = "B";
+                            board[arr[0]][arr[1]] = "-";
+                            
+                        }
+                    }
+                }
+                if (arr[2]<arr[0] && arr[3]>arr[1]){
+                    
+                    for (int i = 1;i<longestLength;i++){
+                        if (arr[0]-i<0){
+                            i=0;
+                        }
+                        if (board[arr[0]-i][arr[1]+i] == "P"||board[arr[0]+1][i] == "T"||board[arr[0]+1][i] == "H"||board[arr[0]+1][i] == "B"||board[arr[0]+1][i] == "Q"||board[arr[0]+1][i] == "K"){
+                            break;
+                        }
+                        if (arr[0]-i == arr[2] && arr[1]+i == arr[3]){
+                            board[arr[2]][arr[3]] = "B";
+                            board[arr[0]][arr[1]] = "-";
+                            
+                        }
+                    }
+                }  
+            }
+             
+        }
+        // queen
+        if (board[arr[0]][arr[1]]=="Q"){
+            boolean flag = true;
+            int longestLength;
+            if (arr[2]>arr[3]){
+                longestLength = arr[2];
+            }else {
+                longestLength = arr[3];
+            }
+            if (arr[2] >= 8 || arr[3]>=8){
+                System.out.println("Jogada invalida");
+            }else{
+                if (arr[2]>arr[0] && arr[3]>arr[1]){
+
+                    
+                    for (int i = 1;i<longestLength;i++){
+                        if (board[arr[0]+i][arr[1]+i] != "-"){
+                            break;
+                        }
+                        if (arr[0]+i == arr[2] && arr[1]+i == arr[3]){
+                            board[arr[2]][arr[3]] = "Q";
+                            board[arr[0]][arr[1]] = "-";
+                        }
+                    }
+                    
+                    
+                }
+                if (arr[2]>arr[0] && arr[3]<arr[1]){
+                    
+                    for (int i = 1;i<longestLength;i++){
+                        if (board[arr[0]+i][arr[1]-i] != "-"){
+                            break;
+                        }
+                        if (arr[0]+i == arr[2] && arr[1]-i == arr[3]){
+                            board[arr[2]][arr[3]] = "Q";
+                            board[arr[0]][arr[1]] = "-";
+                            
+                        }
+                    }
+                }
+                if (arr[2]<arr[0] && arr[3]<arr[1]){
+                    
+                    for (int i = 1;i<longestLength;i++){
+                        if (board[arr[0]-i][arr[1]-i] != "-"){
+                            break;
+                        }
+                        if (arr[0]-i == arr[2] && arr[1]-i == arr[3]){
+                            board[arr[2]][arr[3]] = "Q";
+                            board[arr[0]][arr[1]] = "-";
+                            
+                        }
+                    }
+                }
+                if (arr[2]<arr[0] && arr[3]>arr[1]){
+                    
+                    for (int i = 1;i<longestLength;i++){
+                        if (arr[0]-i<0){
+                            i=0;
+                        }
+                        if (board[arr[0]-i][arr[1]+i] != "-"){
+                            break;
+                        }
+                        if (arr[0]-i == arr[2] && arr[1]+i == arr[3]){
+                            board[arr[2]][arr[3]] = "Q";
+                            board[arr[0]][arr[1]] = "-";
+                            
+                        }
+                    }
+                }  
+            }
+            // vai pra cima
+            if (arr[0]>arr[2]){
+                // verifica se tem sugeira no caminho
+                for (int i=arr[0]-1;i>=arr[2];i--){
+                    if (board[i][arr[1]]=="P"||board[i][arr[1]]=="T"||board[i][arr[1]]=="H"||board[i][arr[1]]=="Q"||board[i][arr[1]]=="K"){
+                        break;
+                    // se ultimo index for igual ao selecionado para mover peça
+                    }else if (i == arr[2]){
+                        // aloca peça
+                        board[arr[2]][arr[3]] = "Q";
+                        board[arr[0]][arr[1]] = "-";
+                    }
+                }
+            }
+            // vai pra baixo
+            if (arr[0]<arr[2]){
+                // verifica se tem sugeira no caminho
+                for (int i=arr[0]+1;i<=arr[2];i++){
+                    if (board[i][arr[1]]=="P"||board[i][arr[1]]=="T"||board[i][arr[1]]=="H"||board[i][arr[1]]=="Q"||board[i][arr[1]]=="K"){
+                        break;
+                    // se ultimo index for igual ao selecionado para mover peça
+                    }else if (i == arr[2]){
+                        // aloca peça
+                        board[arr[2]][arr[3]] = "Q";
+                        board[arr[0]][arr[1]] = "-";
+                    }
+                }
+            }
+            // vai pra direita
+            if (arr[1]<arr[3]){
+                // verifica se tem sugeira no caminho
+                for (int i=arr[1]+1;i<=arr[3];i++){
+                    if (board[arr[0]][i]=="P"||board[i][arr[0]]=="T"||board[i][arr[0]]=="H"||board[i][arr[0]]=="Q"||board[i][arr[0]]=="K"){
+                        break;
+                    // se ultimo index for igual ao selecionado para mover peça
+                    }else if (i == arr[3]){
+                        // aloca peça
+                        board[arr[2]][arr[3]] = "Q";
+                        board[arr[0]][arr[1]] = "-";
+                    }
+                }
+            }
+            // vai pra esquerda
+            if (arr[1]>arr[3]){
+                // verifica se tem sugeira no caminho
+                for (int i=arr[1]-1;i>=arr[3];i--){
+                    if (board[arr[0]][i]=="P"||board[i][arr[0]]=="T"||board[i][arr[0]]=="H"||board[i][arr[0]]=="Q"||board[i][arr[0]]=="K"){
+                        break;
+                    // se ultimo index for igual ao selecionado para mover peça
+                    }else if (i == arr[3]){
+                        // aloca peça
+                        board[arr[2]][arr[3]] = "Q";
+                        board[arr[0]][arr[1]] = "-";
+                    }
+                }
+            }
+            
         }
         
     }
