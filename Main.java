@@ -18,11 +18,6 @@ class Main{
         int line = Character.getNumericValue(input.charAt(0));
         int column = Character.getNumericValue(input.charAt(1));
         
-        System.out.println(line);
-        /*
-        for (int i=0;i<board.length;i++){
-            System.out.println(Arrays.toString(board[i]));
-        }*/
         
 
     }
@@ -33,6 +28,10 @@ class Main{
         return input;
     }
 
-    
+    public static void displayBoard(){
+        for (int i=0;i<board.length;i++){
+            System.out.println(Arrays.toString(board[i]));
+        }
+    }
     
 }
